@@ -142,7 +142,7 @@
         angular.module('myApp', [])
             .controller('ReportController', function ($http) {
                 const vm = this;
-                const baseUrl = 'http://localhost:8080/api/admin/reports';
+                const baseUrl = 'https://doantotnghiepbe-production.up.railway.app/api/admin/reports';
                 const token = localStorage.getItem("token");
 
                 vm.reports = [];

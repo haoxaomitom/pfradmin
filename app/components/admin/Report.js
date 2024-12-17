@@ -1,7 +1,7 @@
 
 app.controller('ReportController', function ($http, $scope) {
 
-    const baseUrl = 'http://localhost:8080/api/admin/reports';
+    const baseUrl = 'https://doantotnghiepbe-production.up.railway.app/api/admin/reports';
     const token = localStorage.getItem("token");
 
     $scope.reports = [];

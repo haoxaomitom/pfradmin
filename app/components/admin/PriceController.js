@@ -1,5 +1,5 @@
 app.controller('PriceController', ['$scope', '$http', function ($scope, $http) {
-    const baseUrl = 'http://localhost:8080/api/prices';
+    const baseUrl = 'https://doantotnghiepbe-production.up.railway.app/api/prices';
 
     // Lấy token từ localStorage
     const token = localStorage.getItem('token');
@@ -105,7 +105,7 @@ app.controller('PriceController', ['$scope', '$http', function ($scope, $http) {
 
         // Gửi yêu cầu xóa với header Authorization
         if ($scope.priceToDelete && token) {
-            $http.delete(`http://localhost:8080/api/prices/${$scope.priceToDelete.priceId}`, {
+            $http.delete(`https://doantotnghiepbe-production.up.railway.app/api/prices/${$scope.priceToDelete.priceId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }  // Thêm header Authorization
             })
             .then(function (response) {

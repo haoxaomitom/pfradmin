@@ -27,7 +27,7 @@ app.controller('PaymentController', function ($scope, $http, $location) {
 
     $scope.loadAllPayments = function () {
         // Gọi API với các tham số phân trang
-        $http.get('http://localhost:8080/api/admin/payments/all', {
+        $http.get('https://doantotnghiepbe-production.up.railway.app/api/admin/payments/all', {
             params: {
                 page: $scope.currentPage,
                 size: $scope.pageSize
@@ -73,7 +73,7 @@ app.controller('PaymentController', function ($scope, $http, $location) {
             return;
         }
 
-        $http.get('http://localhost:8080/admin/payments/search', {
+        $http.get('https://doantotnghiepbe-production.up.railway.app/admin/payments/search', {
             params: params,
             headers: config.headers // Thêm headers
         })
@@ -90,7 +90,7 @@ app.controller('PaymentController', function ($scope, $http, $location) {
     };
 
     $scope.loadPayments = function (userId, page, size) {
-        $http.get(`http://localhost:8080/api/vnpay/user/${userId}`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/vnpay/user/${userId}`, {
             params: { page: page, size: size },
             headers: config.headers // Thêm headers
         })
@@ -105,7 +105,7 @@ app.controller('PaymentController', function ($scope, $http, $location) {
     };
 
     $scope.viewPayment = function (paymentId) {
-        $http.get(`http://localhost:8080/api/vnpay/${paymentId}`, config)
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/vnpay/${paymentId}`, config)
         .then(function (response) {
             $scope.selectedPayment = response.data;
             $('#paymentModal').modal('show');

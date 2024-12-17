@@ -63,7 +63,7 @@ app.controller('AdminController', function ($scope, $http, $window) {
 
     // Lấy danh sách người dùng
     $scope.loadUsers = function () {
-        $http.get(`http://localhost:8080/api/users/getAllUsers?page=${$scope.currentPage - 1}&size=${$scope.pageSize}`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/users/getAllUsers?page=${$scope.currentPage - 1}&size=${$scope.pageSize}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -115,7 +115,7 @@ app.controller('AdminController', function ($scope, $http, $window) {
 
     // lây thông tin chi tiết của 1 user
     $scope.getUserByUsername = function (username) {
-        $http.get(`http://localhost:8080/api/users/getUserByUsername?username=${username}`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/users/getUserByUsername?username=${username}`, {
             headers: {
                 'Authorization': `Bearer ${token}` // Gửi token trong header
             }
@@ -202,7 +202,7 @@ app.controller('AdminController', function ($scope, $http, $window) {
         $scope.error.confirmPassword = ''; // Xóa lỗi nếu mật khẩu khớp
 
         // Gửi request HTTP
-        $http.post('http://localhost:8080/api/administration/user/register-staff', $scope.data, {
+        $http.post('https://doantotnghiepbe-production.up.railway.app/api/administration/user/register-staff', $scope.data, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -223,7 +223,7 @@ app.controller('AdminController', function ($scope, $http, $window) {
     // cập nhật trạng thái tài khoản
     $scope.updateActive = function (id, isActive) {
         const active = !isActive;
-        $http.put(`http://localhost:8080/api/users/${id}?active=${active}`, null, {
+        $http.put(`https://doantotnghiepbe-production.up.railway.app/api/users/${id}?active=${active}`, null, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -286,7 +286,7 @@ app.controller('AdminController', function ($scope, $http, $window) {
 
 
         // Gọi API tìm kiếm
-        $http.get('http://localhost:8080/api/users/searchUsers', {
+        $http.get('https://doantotnghiepbe-production.up.railway.app/api/users/searchUsers', {
             headers: {
                 'Authorization': `Bearer ${token}`
             },

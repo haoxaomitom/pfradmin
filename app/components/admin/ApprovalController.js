@@ -10,7 +10,7 @@ app.controller('ApprovalPostController', function ($scope, $http, $location) {
 
     // Lấy tất cả bài viết với phân trang
     $scope.getAllApprovalPosts = function (page, size) {
-        $http.get('http://localhost:8080/api/approval-posts', {
+        $http.get('https://doantotnghiepbe-production.up.railway.app/api/approval-posts', {
             params: { page: page, size: size },
             headers: headers
         })
@@ -31,7 +31,7 @@ app.controller('ApprovalPostController', function ($scope, $http, $location) {
     $scope.approvePost = function (postId) {
         const userId = localStorage.getItem("userId"); // Lấy userId từ localStorage
 
-        $http.post(`http://localhost:8080/api/approval-posts/approve/${postId}`, null, {
+        $http.post(`https://doantotnghiepbe-production.up.railway.app/api/approval-posts/approve/${postId}`, null, {
             params: { userId: userId },
             headers: headers
         })
@@ -42,7 +42,7 @@ app.controller('ApprovalPostController', function ($scope, $http, $location) {
                     title: "Đã duyệt bài đăng.",
                     content: "Bài viết của bạn đã được duyệt."
                 }
-                $http.post("http://localhost:8080/api/notifications/createNotificationApproval", data, {
+                $http.post("https://doantotnghiepbe-production.up.railway.app/api/notifications/createNotificationApproval", data, {
                     headers: headers
                 });
 
@@ -59,7 +59,7 @@ app.controller('ApprovalPostController', function ($scope, $http, $location) {
         const userId = localStorage.getItem("userId");
         const rejectionReason = prompt("Nhập lý do từ chối:");
         if (rejectionReason) {
-            $http.post(`http://localhost:8080/api/approval-posts/reject/${postId}`, null, {
+            $http.post(`https://doantotnghiepbe-production.up.railway.app/api/approval-posts/reject/${postId}`, null, {
                 params: { rejectionReason: rejectionReason, userId: userId },
                 headers: headers
             })
@@ -69,7 +69,7 @@ app.controller('ApprovalPostController', function ($scope, $http, $location) {
                         title: "Từ chối duyệt bài đăng !.",
                         content: 'Bài viết của bạn không được duyệt, vui lòng kiểm tra thông tin tại phần "Bài đăng bị từ chối".'
                     }
-                    $http.post("http://localhost:8080/api/notifications/createNotificationApproval", data, {
+                    $http.post("https://doantotnghiepbe-production.up.railway.app/api/notifications/createNotificationApproval", data, {
                     headers: headers
                     })
                     .then (function (response){
@@ -93,7 +93,7 @@ console.log(error);
         const searchQuery = ($scope.searchQuery || '').trim(); // Xử lý khoảng trắng thừa hoặc giá trị null
 
         // URL và các tham số của API
-        const url = 'http://localhost:8080/api/approval-posts/search';
+        const url = 'https://doantotnghiepbe-production.up.railway.app/api/approval-posts/search';
         const params = {
             postId: searchQuery,                     // Tìm kiếm gần đúng theo postId
             page: $scope.currentPage || 0,          // Trang hiện tại (mặc định là 0 nếu chưa có)

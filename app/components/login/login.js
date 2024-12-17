@@ -12,7 +12,7 @@ app.controller('LoginController', function ($scope, $location, $http, $window) {
             username: $scope.login.username,
             password: $scope.login.password
         }
-        $http.post('http://localhost:8080/api/administration/user/login', data)
+        $http.post('https://doantotnghiepbe-production.up.railway.app/api/administration/user/login', data)
             .then(function (response) {
                 console.log(response.data.status);
 

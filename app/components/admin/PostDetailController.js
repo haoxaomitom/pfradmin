@@ -136,7 +136,7 @@ app.controller('PostDetailController', function ($scope, $http, $location) {
         }
     };
 
-    const apiUrl = `http://localhost:8080/api/posts/${postId}`;
+    const apiUrl = `https://doantotnghiepbe-production.up.railway.app/api/posts/${postId}`;
 
     $scope.post = {};
     $scope.imageUrls = []; // Danh sách URL ảnh cũ
@@ -250,7 +250,7 @@ app.controller('PostDetailController', function ($scope, $http, $location) {
         }
     
         try {
-            const response = await $http.post(`http://localhost:8080/api/updatePosts/updateImage/${postId}`, formData, {
+            const response = await $http.post(`https://doantotnghiepbe-production.up.railway.app/api/updatePosts/updateImage/${postId}`, formData, {
                 headers: { 'Content-Type': undefined, 'Authorization': `Bearer ${token}` },
                 transformRequest: angular.identity
             });
@@ -288,7 +288,7 @@ app.controller('PostDetailController', function ($scope, $http, $location) {
                 vehicleTypes: $scope.vehicleTags.map(tag => ({ vehicleTypesName: tag }))
             };
     
-            const url = `http://localhost:8080/api/updatePosts/${postId}`;
+            const url = `https://doantotnghiepbe-production.up.railway.app/api/updatePosts/${postId}`;
             await $http.put(url, postData, {
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
             });

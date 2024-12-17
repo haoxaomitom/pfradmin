@@ -7,7 +7,7 @@ app.controller("NotificationController", function ($scope, $http) {
         content: ''
     }
     $scope.getNotiGlobal = function () {
-        $http.get(`http://localhost:8080/api/notifications/getAllByGlobal`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/notifications/getAllByGlobal`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -28,7 +28,7 @@ app.controller("NotificationController", function ($scope, $http) {
     $scope.createNotification = function () {
         data.title = $scope.title;
         data.content = $scope.content;
-        $http.post(`http://localhost:8080/api/notifications/createNotificationGlobal`, data, {
+        $http.post(`https://doantotnghiepbe-production.up.railway.app/api/notifications/createNotificationGlobal`, data, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

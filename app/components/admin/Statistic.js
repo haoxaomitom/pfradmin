@@ -54,7 +54,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
     }
 
     $scope.postsPieChart = function () {
-        $http.get(`http://localhost:8080/api/statistic/countPostsGroupedByStatus`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/statistic/countPostsGroupedByStatus`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -103,7 +103,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
     }
 
     $scope.usersLineChart = function () {
-        $http.get(`http://localhost:8080/api/users/getUsersByMonthAndRole?year=${$scope.selectYear}`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/users/getUsersByMonthAndRole?year=${$scope.selectYear}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -143,7 +143,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
     };
 
     $scope.paymentLineChart = function () {
-        $http.get(`http://localhost:8080/api/statistic/getRevenueByMonth?year=${$scope.selectYear}`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/statistic/getRevenueByMonth?year=${$scope.selectYear}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -180,7 +180,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
 
     };
     $scope.postLineChart = function () {
-        $http.get(`http://localhost:8080/api/statistic/countActivePostsByMonthAndYear?year=${$scope.selectYear}`, {
+        $http.get(`https://doantotnghiepbe-production.up.railway.app/api/statistic/countActivePostsByMonthAndYear?year=${$scope.selectYear}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -216,7 +216,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
         });
     };
     $scope.countUsers = function () {
-        $http.get("http://localhost:8080/api/statistic/countUsers", {
+        $http.get("https://doantotnghiepbe-production.up.railway.app/api/statistic/countUsers", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -231,7 +231,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
             });
     }
     $scope.countPosts = function () {
-        $http.get("http://localhost:8080/api/statistic/countPosts", {
+        $http.get("https://doantotnghiepbe-production.up.railway.app/api/statistic/countPosts", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -246,7 +246,7 @@ app.controller("adminAppController", function ($scope, $http, $location) {
             });
     }
     $scope.countPayments = function () {
-        $http.get("http://localhost:8080/api/statistic/countPayments", {
+        $http.get("https://doantotnghiepbe-production.up.railway.app/api/statistic/countPayments", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
