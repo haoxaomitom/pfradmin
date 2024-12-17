@@ -23,7 +23,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider,  $l
             controller: 'HomeController'
         })
         .when('/statistic', {
-            templateUrl: 'app/components/admin/statistic.html',
+            templateUrl: 'app/components/admin/Statistic.html',
             controller: 'adminAppController'
         })
         .when('/login', {
