@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bài đăng</title>
+    <link rel="stylesheet" href="/assets/Post.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="/app/components/admin/PostController.js"></script> -->
+
+</head>
+
+<body ng-controller="PostController" class="d-flex">
+    
+    <!-- Main Content -->
+    <div class="flex-grow-1 m-3">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded" style="border-radius: 10px;">
+            <h3 class="ms-3">Quản lý bài đăng</h3>
+        </nav>
+
+        <div class="row d-flex align-items-center">
+            <div class="col-sm-9 mt-3 mb-3">
+                <div class="d-flex align-items-center">
+                    <form class="d-flex flex-grow-1 me-2" ng-submit="searchPosts()">
+                        <div class="form-floating flex-grow-1 me-2">
+                            <input type="search" ng-model="searchQuery" class="form-control"
+                                placeholder="Tìm kiếm theo Post ID">    
+                            <label for="fullname">Tìm kiếm theo Post ID</label>
+                        </div>
+                        <button class="btn btn-primary me-2" type="button" ng-click="searchPosts()">Tìm kiếm</button>
+                    </form>
+                    <button class="btn btn-success" type="button" ng-click="loadPosts()">Làm mới</button>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <span class="me-3 ms-3">Trang {{ page + 1 }} / {{ totalPages }}</span>
+
+                <button class="btn btn-primary me-2" ng-click="previousPage()" ng-disabled="page <= 0">Trang
+                    trước</button>
+                <button class="btn btn-primary" ng-click="nextPage()" ng-disabled="page >= totalPages - 1">Trang
+                    sau</button>
+            </div>
+        </div>
+        
+        <!-- Table Controls -->
+
+        <!-- Table -->
+        <table class="table table-bordered table-hover mt-3">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID bài đăng</th>
+                    <th>User ID</th>
+                    <th>Người Đăng</th>
+
+                    <th>Tên Bãi Đỗ</th>
+                    <th>Thời gian tạo</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th> <!-- Thêm cột "Hành động" -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="post in posts">
+                    <td>{{ post.postId }}</td>
+                    <td>{{ post.userId }}</td>
+                    <td>{{ post.user.lastName + ' ' + post.user.firstName }}</td>
+                    <td>{{ post.parkingName }}</td>
+                    <td>{{ post.createdAt | date:'dd/MM/yyyy h:mm:ss a' }}</td>
+                    <td>{{ post.status }}</td>
+                    <td>
+                        <!-- Nút Chi tiết bài đăng -->
+                        <button class="btn btn-info btn-sm" ng-click="viewDetails(post.postId)"><i class="fa fa-eye"></i> Chi tiết</button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Add Post Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" ng-show="showAddPostModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Bài Đăng</h5>
+                    <button type="button" class="btn-close" ng-click="closeAddPostModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form ng-submit="createPost()">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" ng-model="newPost.username"
+                                placeholder="Tên người dùng" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" ng-model="newPost.parkingName"
+                                placeholder="Tên bãi đỗ" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Lưu bài đăng</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/assets/PostDetail.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/app/components/admin/PostDetailController.js"></script> -->
+</head>
+
+<body ng-controller="PostDetailController" class="d-flex">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded" style="border-radius: 10px;">
+        <h3 class="ms-3">Quản lý chi tiết bài đăng</h3>
+    </nav>
+
+    <!-- Form Content -->
+    <div class="row mt-3">
+        <!-- Leftside -->
+        <div class="col-sm-8">
+            <!-- Title Section -->
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    Tiêu đề và Mô tả
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" placeholder="Nhập tiêu đề"
+                                ng-model="post.parkingName">
+                            <label for="fullname">Tiêu đề</label>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control h-auto" id="floatingTextarea" rows="4" placeholder="Nhập mô tả"
+                            ng-model="post.description"></textarea>
+                        <label for="floatingTextarea">Nhập mô tả</label>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Address Section -->
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    Địa chỉ
+                </div>
+                <div class="card-body">
+                    <form>
+                        <fieldset>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label for="province">Tỉnh/Thành Phố</label>
+                                    <select id="province" class="form-select mb-3" ng-model="selectedProvince"
+                                        ng-options="province as province.Name for province in provinces"
+                                        ng-change="onProvinceChange()">
+                                        <option value="">Chọn Tỉnh/Thành Phố</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="district">Quận/Huyện</label>
+                                    <select id="district" class="form-select mb-3" ng-model="selectedDistrict"
+                                        ng-options="district as district.Name for district in selectedProvince.Districts"
+                                        ng-change="onDistrictChange()" ng-disabled="!selectedProvince">
+                                        <option value="">Chọn Quận/Huyện</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label for="ward">Phường/Xã</label>
+                                    <select id="ward" class="form-select mb-3" ng-model="selectedWard"
+                                        ng-options="ward as ward.Name for ward in selectedDistrict.Wards"
+                                        ng-disabled="!selectedDistrict">
+                                        <option value="">Chọn Phường/Xã</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="street">Tên Đường</label>
+                                    <input type="text" id="street" ng-model="post.street" class="form-control mb-3"
+                                        placeholder="Nhập tên đường">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+
+            <!-- Area and Price Section -->
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    Thông tin bãi và giá tiền
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="capacity">Sức chứa xe:</label>
+                            <input type="number" id="capacity" class="form-control" ng-model="post.capacity"
+                                placeholder="Nhập diện tích">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="price" class="form-label">Giá</label>
+                            <div class="input-group">
+                                <input type="number" id="price" class="form-control" ng-model="post.price"
+                                    placeholder="Nhập giá" required>
+                                <select id="priceUnit" ng-model="post.priceUnit" class="form-select" required>
+                                    <option value="VND/giờ">VND/giờ</option>
+                                    <option value="VND/ngày">VND/ngày</option>
+                                    <option value="VND/tháng">VND/tháng</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Amenities Section -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-primary text-white">
+                            Tiện Ích
+                        </div>
+                        <div class="card-body">
+                            <!-- Hiển thị các thẻ tiện ích đã chọn -->
+                            <div class="mb-3">
+                                <h5>Các tiện ích đã chọn:</h5>
+                                <div class="tag-container" id="tagContainer">
+                                    <div class="tag" ng-repeat="tag in tags">
+                                        {{tag}}
+                                        <span class="close" ng-click="removeTag(tag)">x</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Danh sách checkbox các tiện ích -->
+                            <div class="mb-3">
+                                <h5>Chọn tiện ích:</h5>
+                                <div class="row row-cols-2 row-cols-md-3 g-3">
+                                    <div class="col" ng-repeat="(key, label) in checkboxOptions">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="checkbox-{{key}}"
+                                                ng-model="post.amenities[key]" ng-change="toggleCheckbox(key, label)">
+                                            <label class="form-check-label" for="checkbox-{{key}}">{{label}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Nhập tiện ích tùy chỉnh -->
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="manualInput"
+                                    placeholder="Nhập tiện ích..." ng-keydown="addTagOnEnter($event)">
+                                <button class="btn btn-success" style="width:auto !important" type="button"
+                                    ng-click="addTag(manualInput)">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="card mb-3">
+                        <div class="card-header bg-primary text-white">
+                            Loại phương tiện
+                        </div>
+                        <div class="card-body">
+                            <!-- Hiển thị các thẻ tiện ích đã chọn -->
+                            <div class="mb-3">
+                                <h5>Các loại xe đã chọn:</h5>
+                                <div class="tag-container" id="vehicleTagContainer">
+                                    <div class="tag" ng-repeat="vehicle in vehicleTags">
+                                        {{vehicle}}
+                                        <span class="close" ng-click="removeVehicleTag(vehicle)">x</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Danh sách checkbox các loại xe -->
+                            <div class="mb-3">
+                                <h5>Chọn loại xe:</h5>
+                                <div class="row row-cols-2 row-cols-md-3 g-3">
+                                    <div class="col" ng-repeat="(key, label) in vehicleCheckboxOptions">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                id="vehicle-checkbox-{{key}}" ng-model="post.vehicleTypes[key]"
+                                                ng-change="toggleVehicleCheckbox(key, label)">
+                                            <label class="form-check-label"
+                                                for="vehicle-checkbox-{{key}}">{{label}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Nhập loại xe tùy chỉnh -->
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="manualVehicleInput"
+                                    placeholder="Nhập loại xe..." ng-keydown="addVehicleTagOnEnter($event)">
+                                <button class="btn btn-success" style="width:auto !important" type="button"
+                                    ng-click="addVehicleTag(manualVehicleInput)">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Button Section -->
+        <div class="col-sm-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Vị trí bản đồ
+                </div>
+                <div class="map-container m-3" id="map"></div>
+            </div>
+            <div class="text-center mt-3">
+                <a class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#infoModal">Chỉnh sửa ảnh</a>
+            </div>
+            <!-- Kiểm tra nếu post.status là 'WAITING' để hiển thị các nút Duyệt và Từ chối -->
+            <!-- <div class="d-flex justify-content-between" ng-if="post.status === 'WAITING'">
+                <button class="btn btn-success btn-sm me-1" ng-click="approvePost(post.postId)">
+                    <i class="fa fa-check"></i> Duyệt
+                </button>
+                <button class="btn btn-danger btn-sm" ng-click="rejectPost(post.postId)">
+                    <i class="fa fa-times"></i> Từ chối
+                </button>
+            </div> -->
+
+            <!-- Kiểm tra nếu post.status không phải là 'WAITING' để hiển thị các nút Cập nhật, Xóa và Quay về -->
+            <div ng-if="post.status !== 'WAITING'" class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-success" ng-click="submitPost()">Cập nhật</button>
+                <button class="btn btn-danger mx-2" ng-click="deleteDetailPost()">Xóa bài đăng</button>
+            </div>
+
+            <!-- <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-success" ng-click="submitPost()">Cập nhật</button>
+            <button class="btn btn-danger" ng-click="deleteDetailPost()">Xóa bài đăng</button>
+            <button class="btn btn-secondary" ng-click="goBackToPreviousPage()">Quay về</button>
+        </div> -->
+        </div>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Thông Tin Chi Tiết</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="text-center">Hình ảnh</h2>
+                    <div class="image-upload">
+                        <label for="file-input" class="text-center">
+                            <div class="image-placeholder">
+                                <span>+</span>
+                                <p>Nhấp để đưa ảnh lên</p>
+                            </div>
+                        </label>
+                        <input id="file-input" type="file" multiple
+                            onchange="angular.element(this).scope().onFileSelect(this.files)" accept="image/*">
+                    </div>
+                    <p class="note">Lưu ý: Bạn cần ít nhất 1 ảnh (Tối đa 10 ảnh) để đăng tin</p>
+
+                    <div class="preview-images" ng-if="imageUrls.length > 0 || newImages.length > 0">
+                        <h3>Ảnh đã tải lên:</h3>
+                        <div class="row">
+                            <div class="col-md-3 m-3" ng-repeat="image in imageUrls.concat(newImages)">
+                                <img ng-src="{{image.preview || image}}" alt="Preview Image" class="img-thumbnail" />
+                                <p>{{image.name || 'Ảnh cũ'}}</p>
+                                <button type="button" class="btn btn-danger" ng-click="removeImage(image)">Xóa
+                                    ảnh</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hoàn tất</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaqWzB_IIAlUg3Iwp8yFfgjIIFhhMF0IQ&callback=initMap"
+        async defer></script>
+</body>
+
+</html>

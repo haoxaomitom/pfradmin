@@ -1,0 +1,45 @@
+aside.aside {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    height: 100vh; 
+    overflow-y: auto;
+    z-index: 1000;
+    width: 300px; 
+    background-color: #17a2b8;
+}
+
+
+@media (max-width: 768px) {
+    .aside {
+        display: none;
+    }
+}
+
+
+    /* Thêm hiệu ứng hover cho các mục trong menu */
+    .nav-pills .nav-link:hover {
+        background-color: #007bff; /* Màu nền khi hover */
+        color: white; /* Màu chữ khi hover */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu */
+    }
+
+    /* Thêm hiệu ứng hover cho các mục menu */
+    .nav-pills .nav-link {
+        padding: 10px 15px; /* Điều chỉnh padding cho mỗi mục */
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #0056b3; /* Màu nền của mục đang được chọn */
+        color: white;
+    }
+
+    /* Thêm hiệu ứng khi di chuột vào các mục menu */
+    .nav-pills .nav-link i {
+        margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
+        transition: transform 0.3s ease; /* Hiệu ứng chuyển động */
+    }
+
+    .nav-pills .nav-link:hover i {
+        transform: scale(1.2); /* Phóng to biểu tượng khi hover */
+    }

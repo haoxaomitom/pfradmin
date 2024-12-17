@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Profile</title>
+
+</head>
+
+<body ng-controller="detailUserController">
+    <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded" style="border-radius: 10px;">
+        <h3 class="ms-3">Thông tin tài khoản</h3>
+    </nav>
+
+    <!-- Form -->
+    <div class="profile-form mt-3 me-5" ng-class="{'fade-in': !loading}">
+        <form ng-submit="update()">
+            <div class="mb-3 row">
+                <div class="col-sm-6"><label for="name" class="form-label">Họ</label>
+                    <input type="text" class="form-control rounded" id="lastName" placeholder="Họ" ng-model="lastName">
+                </div>
+                <div class="col-sm-6"><label for="name" class="form-label">Tên</label>
+                    <input type="text" class="form-control rounded" id="firstName" placeholder="Tên"
+                        ng-model="firstName">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-6">
+                    <label for="name" class="form-label">Giới tính</label>
+                    <br>
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="Nam" ng-model="gender"
+                        {{gender=="Nam" ? 'checked' :''}}>
+                    <label for="male" style="margin-right: 50px;">Nam</label>
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="Nữ" ng-model="gender"
+                        {{gender=="Nữ" ? 'checked' :''}}>
+                    <label for="female">Nữ</label>
+                </div>
+                <div class="col-sm-6">
+                    <label for="name" class="form-label">Ngày sinh</label>
+                    <input type="text" class="form-control rounded" id="name" placeholder="dd/MM/yyyy"
+                        ng-model="dateOfBirth">
+                </div>
+
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-6">
+                    <label for="phone" class="form-label">Thành phố/Tỉnh</label>
+                    <input type="text" class="form-control rounded" ng-model="inputProvince"
+                        ng-keyup="searchSuggestions(inputProvince)" placeholder="Nhập tên tỉnh/thành phố...">
+                    <section class="list-group" ng-if="suggestions.length">
+                        <option class="list-group-item" ng-repeat="suggestion in suggestions"
+                            ng-click="selectProvince(suggestion)">
+                            {{ suggestion.Name }}
+                        </option>
+                    </section>
+                </div>
+                <div class="col-sm-6">
+                    <label for="phone" class="form-label">Quận/Huyện</label>
+                    <select id="district" class="form-select" ng-model="selectedDistrict"
+                        ng-options="district as district.Name for district in selectedProvince.Districts"
+                        ng-change="onDistrictChange()" ng-disabled="!selectedProvince">
+                        <option value="">Chọn Quận/Huyện</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-6">
+                    <label for="phone" class="form-label">Phường/Thị trấn/Xã</label>
+                    <select id="ward" class="form-select" ng-model="selectedWard"
+                        ng-options="ward as ward.Name for ward in selectedDistrict.Wards"
+                        ng-disabled="!selectedDistrict">
+                        <option value="">Chọn Phường/Xã</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="phone" class="form-label">Tên đường</label>
+                    <input type="text" class="form-control rounded" id="phone" placeholder="">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control rounded" id="phone" placeholder="" ng-model="phoneNumber">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                    <input type="email" class="form-control rounded-start" id="email" placeholder="Email"
+                        ng-model="email">
+                    <button class="btn btn-outline-secondary rounded-end" type="button" id="confirm-email-button"
+                        ng-click="verified()"
+                        ng-disabled="isLoading || isVerified === 'Đã xác thực' || isVerified === 'Đã gửi'">
+                        <span ng-if="isLoading" class="spinner-border spinner-border-sm"></span>
+                        <span ng-if="!isLoading">{{isVerified}}</span>
+                    </button>
+
+                </div>
+            </div>
+            <button type="submit" ng-click="uploadAvatar()" class="btn btn-primary rounded-pill">Cập
+                nhật</button>
+        </form>
+    </div>
+    <!-- Toast Notification -->
+    <div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="https://res.cloudinary.com/dqzfuomvj/image/upload/v1730822083/1_au4rfg.jpg"
+                    style="height:auto; width:50px" class="rounded me-2" alt="logo">
+                <strong class="me-auto">Thông báo</strong>
+                <!-- <small>11 mins ago</small> -->
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                {{ toastMessage }}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

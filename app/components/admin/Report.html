@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Báo cáo</title>
+    <style>
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        /* Đảm bảo các nút trong cột hành động ngang hàng */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            /* Khoảng cách giữa các nút */
+            white-space: nowrap;
+        }
+
+        /* Thêm CSS cho phân trang */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        /* Modal cải tiến */
+        .modal-dialog {
+            max-width: 800px;
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+
+        /* Cải thiện giao diện cho các thông báo */
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body ng-controller="ReportController">
+    <div class="container mt-4">
+        <h2>Quản lý Báo cáo</h2>
+
+        <!-- Tìm kiếm và Sắp xếp -->
+        <div class="form-row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="search">Tìm kiếm:</label>
+                    <input type="text" class="form-control" ng-model="searchQuery()" placeholder="Tìm kiếm báo cáo...">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="sort">Sắp xếp theo:</label>
+                    <select class="form-control" ng-model="sortBy()" ng-change="sortReports()">
+                        <option value="createdAt">Ngày tạo</option>
+                        <option value="status">Trạng thái</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng báo cáo -->
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID Báo Cáo</th>
+                    <th>Loại Báo Cáo</th>
+                    <th>ID Người Dùng</th>
+                    <th>ID Bài Đăng</th>
+                    <th>Thông Tin Báo Cáo</th>
+                    <th>Ngày Tạo</th>
+                    <th>Trạng Thái</th>
+                    <th>Lý do từ chối</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="report in reports">
+                    <td>{{ report.reportId }}</td>
+                    <td>{{ report.reportType }}</td>
+                    <td>{{ report.user }}</td>
+                    <td>{{ report.post }}</td>
+                    <td>{{ report.reportContent }}</td>
+                    <td>{{ report.createdAt | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                    <td>{{ report.status }}</td>
+                    <td>{{ report.rejectedReason || 'N/A' }}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-info btn-sm" ng-click="viewReportDetails(report)">Xem chi tiết</button>
+                        <button class="btn btn-success btn-sm" ng-click="approveReport(report.reportId)" ng-disabled="report.status === 'Đã duyệt'">Duyệt</button>
+                        <button class="btn btn-danger btn-sm" ng-click="openRejectModal(report)" ng-disabled="report.status === 'Bị từ chối'">Từ chối</button>
+                    </td>
+                </tr>
+            </tbody>
+            
+            
+        </table>
+
+        <!-- Modal Xem Chi Tiết -->
+        <div class="modal" tabindex="-1" role="dialog" id="detailsModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title">Chi tiết Báo cáo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>ID Báo Cáo:</strong> {{ vm.selectedReport.reportId }}</p>
+                        <p><strong>Loại Báo Cáo:</strong> {{ vm.selectedReport.reportType }}</p>
+                        <p><strong>ID Người Dùng:</strong> {{ vm.selectedReport.user }}</p>
+                        <p><strong>ID Bài Đăng:</strong> {{ vm.selectedReport.post }}</p>
+                        <p><strong>Thông Tin Báo Cáo:</strong> {{ vm.selectedReport.reportContent }}</p>
+                        <p><strong>Ngày Tạo:</strong> {{ vm.selectedReport.createdAt | date: 'yyyy-MM-dd HH:mm:ss' }}
+                        </p>
+                        <p><strong>Trạng Thái:</strong> {{ vm.selectedReport.status }}</p>
+                        <p><strong>Lý do từ chối:</strong> {{ vm.selectedReport.rejectedReason || 'N/A' }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phân trang -->
+        <div class="pagination">
+            <button class="btn btn-secondary" ng-disabled="vm.currentPage === 1"
+                ng-click="vm.changePage(1)">Đầu</button>
+            <button class="btn btn-secondary" ng-disabled="vm.currentPage === 1"
+                ng-click="vm.changePage(vm.currentPage - 1)">Trước</button>
+            <span>Trang {{ vm.currentPage }} / {{ vm.totalPages }}</span>
+            <button class="btn btn-secondary" ng-disabled="vm.currentPage === vm.totalPages"
+                ng-click="vm.changePage(vm.currentPage + 1)">Sau</button>
+            <button class="btn btn-secondary" ng-disabled="vm.currentPage === vm.totalPages"
+                ng-click="vm.changePage(vm.totalPages)">Cuối</button>
+        </div>
+    </div>
+
+    <!-- Modal từ chối báo cáo -->
+    <div class="modal" tabindex="-1" role="dialog" id="rejectModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title">Từ chối Báo cáo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Bạn có chắc muốn từ chối báo cáo này không?</strong></p>
+                    <div class="form-group">
+                        <label for="rejectedReason">Lý do từ chối:</label>
+                        <textarea class="form-control" id="rejectedReason" rows="4" ng-model="vm.rejectedReason"
+                            placeholder="Nhập lý do từ chối..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" ng-click="vm.confirmReject()">Xác nhận</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html ng-app="paymentApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Management</title>
+
+
+    <style>
+        .pagination {
+            justify-content: center;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form input {
+            margin-right: 10px;
+        }
+
+        form button {
+            min-width: 100px;
+        }
+    </style>
+
+</head>
+
+<body ng-controller="PaymentController">
+    <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded" style="border-radius: 10px;">
+        <h3 class="ms-3">Lịch sử thanh toán</h3>
+    </nav>
+
+    <!-- Search and Sort -->
+    <div class="d-flex align-items-center justify-content-between my-3">
+        <!-- Form tìm kiếm -->
+        <form ng-submit="searchPayments(searchQuery)" class="d-flex flex-grow-1 me-3">
+            <div class="form-floating flex-grow-1 me-2">
+                <input type="text" ng-model="searchQuery" class="form-control" placeholder="Tìm kiếm thanh toán..."
+                    ng-keypress="onSearchKeyPress($event)">
+                <label for="fullname">Tìm kiếm theo ID bài đăng, ID thanh toán, UserId</label>
+            </div>
+            <button type="submit" class="btn btn-primary flex-shrink-0">Tìm kiếm</button>
+        </form>
+        <button class="btn btn-primary" ng-click="loadAllPayments()">Làm mới</button>
+
+        <!-- Dropdown sắp xếp -->
+        <div class="flex-grow-0">
+            <select ng-model="sortCriteria" class="form-select">
+                <option value="paymentDate">Sắp xếp theo ngày thanh toán</option>
+                <option value="paymentAmount">Sắp xếp theo số tiền</option>
+                <option value="paymentStatus">Sắp xếp theo trạng thái</option>
+            </select>
+        </div>
+    </div>
+
+
+
+    <!-- Payment Table -->
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>ID thanh toán</th>
+                <th>ID bài đăng</th>
+                <th>ID User</th>
+                <th>ID giao dịch</th>
+                
+                <th>Số tiền</th>
+                <th>Ngày thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="payment in payments | filter: searchQuery | orderBy: sortCriteria">
+                <td>{{ payment.paymentId }}</td>
+                <td>{{ payment.postId }}</td>
+                <td>{{ payment.userId }}</td>
+                <td>{{ payment.vnpTxnRef }}</td>
+                
+                <td>{{formatCurrency(payment.paymentAmount) + " " + payment.currency}}</td>
+                <td>{{ payment.paymentDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ payment.paymentStatus }}</td>
+                <!-- <td>
+                    <button class="btn btn-info btn-sm" ng-click="viewPayment(payment.paymentId)">Xem chi tiết</button>
+                </td> -->
+                <td>
+                    <!-- Nút Chi tiết bài đăng -->
+                    <button class="btn btn-info btn-sm" ng-click="viewDetails(payment.postId.postId)"><i class="fa fa-eye"></i> Chi tiết</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" ng-class="{ 'disabled': currentPage === 0 }">
+                <a class="page-link" href="#" ng-click="prevPage()">Trước</a>
+            </li>
+            <li class="page-item" ng-class="{ 'disabled': currentPage === totalPages - 1 }">
+                <a class="page-link" href="#" ng-click="nextPage()">Sau</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Chi tiết thanh toán</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>ID:</strong> {{ selectedPayment.paymentId }}</p>
+                    <p><strong>Tên bài đăng:</strong> {{ selectedPayment.postId.parkingName }}</p>
+                    <p><strong>Số tiền:</strong> {{ selectedPayment.paymentAmount | currency:'VND' }}</p>
+                    <p><strong>Ngày thanh toán:</strong> {{ selectedPayment.paymentDate | date:'dd/MM/yyyy HH:mm' }}</p>
+                    <p><strong>Trạng thái:</strong> {{ selectedPayment.paymentStatus }}</p>
+                    <p><strong>Ngân hàng:</strong> {{ selectedPayment.bankCode }}</p>
+                    <p><strong>TxnRef:</strong> {{ selectedPayment.vnpTxnRef }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+.truncate-text {
+    white-space: nowrap; /* Không cho phép xuống dòng */
+    overflow: hidden;    /* Ẩn phần văn bản vượt quá */
+    text-overflow: ellipsis; /* Thêm dấu "..." ở cuối */
+    max-width: 100%;    /* Đặt độ rộng tối đa */
+}
+tr:hover {
+    background-color: #cacaca  !important; /* Màu nền khi di chuột qua */
+}
+tr {
+    border-bottom: 1px solid #bebebe; /* Đặt đường viền màu xám nhạt */
+    text-align: left; /* Căn chỉnh nội dung sang trái */
+}

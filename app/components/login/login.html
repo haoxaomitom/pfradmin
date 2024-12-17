@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-card {
+            max-width: 800px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .forgot-password {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            font-size: 14px;
+        }
+    </style>
+
+</head>
+
+<body ng-controller="LoginController">
+    <div class="login-card">
+        <h4 class="text-center mb-4">Đăng nhập</h4>
+        <form ng-submit="submitFormLogin()">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên tài khoản</label>
+                <input type="text" id="username" class="form-control" placeholder="Nhập tên tài khoản" ng-model="login.username" required>
+            </div>
+            <div class="mb-3">
+                <label for="loginPassword" class="form-label">Mật khẩu</label>
+                <input type="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" ng-model="login.password" required>
+            </div>
+            <div class="mb-3 text-danger message" ng-show="message">
+                {{message}}
+            </div>
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        </form>
+        <div class="mt-3 text-center">
+            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+        </div>
+    </div>
+</body>
+
+</html>

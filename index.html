@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ParkingAdminApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFR - Admin Manager</title>
+
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://res.cloudinary.com/dqzfuomvj/image/upload/v1730822662/4_jhd3xb.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/assets/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.3/angular-sanitize.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/5c73425aee.js" async crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="app.js"></script>
+
+    <base href="/">
+</head>
+
+<body class="d-flex row" ng-controller="HomeController">
+
+    <aside class="aside bg-info p-3" style="width: 250px; height: 100vh; color:black">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+            <img src="https://res.cloudinary.com/dqzfuomvj/image/upload/v1730823121/2__1_-removebg-preview_cfjj2h.png"
+                alt="Logo" class="logo-image" style="height:auto; width:220px">
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a href="/" class="nav-link text-black">
+                    <i class="fas fa-home-alt me-2"></i> Trang chủ
+                </a>
+            </li>
+            <li>
+                <a href="#/post" class="nav-link text-black me-2">
+                    <i class="fas fa-file-alt me-2"></i> Quản lý bài đăng
+                </a>
+            </li>
+            <li>
+                <a href="#/approve" class="nav-link text-black me-2">
+                    <i class="fa-solid fa-list-check"></i> Duyệt bài đăng
+                </a>
+            </li>
+            <li>
+                <a href="#/user" class="nav-link text-black me-2">
+                    <i class="fa-solid fa-users"></i> Quản lý tài khoản
+                </a>
+            </li>
+            <li>
+                <a href="#/detailAccount" class="nav-link text-black me-2">
+                    <i class="fas fa-user me-2"></i> Thông tin tài khoản
+                </a>
+            </li>
+            <li>
+                <a href="#/price" class="nav-link text-black me-2">
+                    <i class="fa-solid fa-dollar-sign"></i> Quản lý bảng giá
+                </a>
+            </li>
+            <li>
+                <a href="#/payment" class="nav-link text-black me-2">
+                    <i class="fas fa-receipt me-2"></i> Quản lý hóa đơn
+                </a>
+            </li>
+            <!-- Quản lý báo cáo bài đăng -->
+            <li>
+                <a href="#/report" class="nav-link text-black me-2">
+                    <i class="fas fa-flag me-2"></i> Quản lý báo cáo bài đăng
+                </a>
+            </li>
+            
+            <li>
+                <a href="#/statistic" class="nav-link text-black me-2">
+                    <i class="fa-solid fa-chart-simple"></i> Thống kê
+                </a>
+            </li>
+            <li>
+                <a ng-click="logout()" class="nav-link text-black me-2">
+                    <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="flex-grow-1 m-3">
+        <div ng-view style="margin-left: 250px;">
+            <h1>somethings else</h1>
+        </div>
+    </div>
+
+
+
+</body>
+<script src="/app/components/admin/PostController.js" defer></script>
+<script src="/app/components/admin/PostDetailController.js"></script>
+<script src="/app/components/admin/PriceController.js" defer></script>
+<script src="/app/components/admin/Report.js"></script>
+<script src="/app/components/admin/ApprovalController.js" defer></script>
+<script src="/app/components/admin/Users.js"></script>
+<script src="/app/components/admin/Statistic.js"></script>
+<script src="/app/components/admin/PaymentController.js" defer></script>
+<script src="/app/components/admin/Home.js"></script>
+<script src="/app/components/admin/DetailAccountController.js"></script>
+
+<script src="/app/components/login/login.js"></script>
+
+</html>

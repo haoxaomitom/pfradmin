@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
+</head>
+
+<body class="container" ng-controller="adminAppController">
+    <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded d-flex align-items-center justify-content-center"
+        style="border-radius: 10px;">
+        <h3>Thống kê</h3>
+    </nav>
+
+
+    <div class="card p-4 m-3">
+        <div class="row">
+            <div class="col-sm-4">
+                <h4 class="card p-2 bg-info-subtle" id="countUsers">Tổng số tài khoản: {{totalUsers}}</h4>
+            </div>
+            <div class="col-sm-4">
+                <h4 class="card p-2 bg-success-subtle" id="countPosts">Tổng số bài đăng: {{totalPosts}}</h4>
+            </div>
+            <div class="col-sm-4">
+                <h4 class="card p-2 bg-warning-subtle" id="countPayments">Tổng số lượt đẩy top: {{totalPayments}}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-flex align-items-center">
+        <div class="col-sm-4">
+            <canvas id="pieChart"></canvas>
+            <div class="text-center m-3">
+                <i> Biểu đồ cơ cấu bài đăng</i>
+            </div>
+
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-6">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2 flex-grow-1 " type="search" placeholder="Nhập vào năm"
+                    aria-label="Search" ng-model="year">
+                <button class="btn btn-outline-success flex-shrink-0" type="submit" ng-click="updateYear()">Xác
+                    nhận</button>
+            </form>
+            <canvas id="lineChart"></canvas>
+            <div class="text-center" style="margin-top: 20px;">
+                <button class="btn btn-primary" ng-click="paymentLineChart()">Doanh thu</button>
+                <button class="btn btn-primary" ng-click="usersLineChart()">Người dùng</button>
+                <button class="btn btn-primary" ng-click="postLineChart()">Bài đăng</button>
+            </div>
+            <div class="text-center m-3">
+                <i> Biểu đồ tốc độ tăng trưởng</i>
+            </div>
+            
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+
+
+</body>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="home.js"></script> -->
+
+</html>

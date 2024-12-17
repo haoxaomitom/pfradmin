@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bài duyệt</title>
+    <!-- Bootstrap 5 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="/app/components/admin/ApprovalController.js"></script> -->
+
+</head>
+
+<body ng-controller="ApprovalPostController" class="d-flex">
+
+    <!-- Content -->
+    <div class="content flex-grow-1">
+
+        <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded" style="border-radius: 10px;">
+            <h3 class="ms-3">Duyệt bài đăng</h3>
+        </nav>
+
+        <!-- <form class="d-flex flex-grow-1 me-2" ng-submit="search()">
+                <div class="form-floating flex-grow-1 me-2">
+                    <input type="text" ng-model="searchQuery" class="form-control"
+                        placeholder="Tìm kiếm theo Post ID hoặc Approval Post ID">
+                    <label for="searchQuery">Tìm kiếm theo Post ID hoặc Approval Post ID</label>
+                </div>
+                <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+            </form>
+            <button class="btn btn-success" type="button" ng-click="getAllApprovalPosts()">Làm mới</button> -->
+
+        <div class="row d-flex align-items-center">
+            <div class="col-sm-9 mt-3 mb-3">
+                <div class="d-flex align-items-center">
+                    <form class="d-flex flex-grow-1 me-2" ng-submit="searchApprovalPosts()">
+                        <div class="form-floating flex-grow-1 me-2">
+                            <!-- Thêm id="searchQuery" để liên kết với label -->
+                            <input type="search" id="searchQuery" ng-model="searchQuery" class="form-control" placeholder="Tìm kiếm theo Post ID">
+                            <label for="searchQuery">Tìm kiếm theo ID duyệt bài</label>
+                        </div>
+                        <!-- Đổi type="button" thành type="submit" -->
+                        <button class="btn btn-primary me-2" type="submit">Tìm kiếm</button>
+                    </form>
+                    
+                    <button class="btn btn-success" type="button" ng-click="getAllApprovalPosts()">Làm mới</button>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <span class="me-3 ms-3">Trang {{ page + 1 }} / {{ totalPages }}</span>
+
+                <button class="btn btn-primary me-2" ng-click="previousPage()" ng-disabled="page <= 0">Trang
+                    trước</button>
+                <button class="btn btn-primary" ng-click="nextPage()" ng-disabled="page >= totalPages - 1">Trang
+                    sau</button>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Post ID</th>
+                    <th>Duyệt bởi</th>
+                    <th>Trạng thái</th>
+                    <th>Lí do</th>
+                    <th>Duyệt vào</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="approvalPosts.length === 0">
+                    <td colspan="7" class="text-center">Không có dữ liệu hoặc xảy ra lỗi khi tải.</td>
+                </tr>
+                <tr ng-repeat="item in approvalPosts">
+                    <td>{{item.approvalPostId}}</td>
+                    <td>{{item.post.postId}}</td>
+                    <td>{{item.reviewedByUser.userId || 'N/A'}}</td>
+                    <td>
+                        <span
+                            ng-class="{'text-danger': item.status === 'Rejected', 'text-success': item.status === 'Approved', 'text-warning': item.status === 'Waiting'}">
+                            {{item.status}}
+                        </span>
+                    </td>
+                    <td>{{item.rejectionReason || 'N/A'}}</td>
+                    <td>{{item.reviewedAtFormatted || 'N/A'}}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-1" ng-click="viewDetails(item.post.postId)">
+                            <i class="fa fa-eye"></i> Chi tiết
+                        </button>
+                        <button class="btn btn-success btn-sm me-1" ng-click="approvePost(item.approvalPostId)"
+                            ng-if="item.status === 'WAITING'">
+                            <i class="fa fa-check"></i> Duyệt
+                        </button>
+                        <button class="btn btn-danger btn-sm" ng-click="rejectPost(item.approvalPostId)"
+                            ng-if="item.status === 'WAITING'">
+                            <i class="fa fa-times"></i> Từ chối
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+
+</html>

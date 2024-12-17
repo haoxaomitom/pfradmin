@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý giá</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="/app/components/admin/PriceController.js"></script> -->
+</head>
+
+<body ng-controller="PriceController">
+    <div class="flex-grow-1 m-3">
+        <!-- Form quản lý giá -->
+
+        <nav class="navbar navbar-light bg-white shadow bg-body-tertiary rounded" style="border-radius: 10px;">
+            <h3 class="ms-3">Quản lý bảng giá</h3>
+        </nav>
+
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-white">
+                <h5>Quản lý giá</h5>
+            </div>
+            <div class="card-body">
+                <form id="priceForm" novalidate>
+                    <div class="row mb-3">
+                        <!-- Duration -->
+                        <div class="col-md-4">
+                            <label for="duration" class="form-label">Thời hạn (ngày)</label>
+                            <input type="number" id="duration" class="form-control" placeholder="Nhập thời hạn"
+                                ng-model="price.duration" required>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="col-md-4">
+                            <label for="amount" class="form-label">Giá tiền gốc</label>
+                            <div class="input-group">
+                                <!-- Input nhập giá tiền gốc -->
+                                <input type="number" id="amount" class="form-control" placeholder="Nhập giá tiền gốc"
+                                    ng-model="price.amount" ng-change="calculateFinalAmount()" required>
+                                <!-- Hiển thị định dạng giá tiền -->
+                                <span class="input-group-text">{{ price.amount | currencyFormat }}</span>
+                            </div>
+                        </div>
+                        <!-- Discount Percentage -->
+                        <div class="col-md-4">
+                            <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%)</label>
+                            <input type="number" id="discountPercentage" class="form-control"
+                                placeholder="Nhập % giảm giá" ng-model="price.discountPercentage"
+                                ng-change="calculateFinalAmount()" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <!-- Currency -->
+                        <div class="col-md-4">
+                            <label for="currency" class="form-label">Loại tiền tệ</label>
+                            <input type="text" id="currency" class="form-control" placeholder="VD: VND, USD"
+                                ng-model="price.currency" maxlength="3">
+                        </div>
+
+                        <!-- Final Amount (Readonly) -->
+                        <div class="col-md-4">
+                            <label for="finalAmount" class="form-label">Giá sau giảm</label>
+                            <div class="input-group">
+                                <!-- Input readonly giá sau giảm -->
+                                <input type="number" id="finalAmount" class="form-control" placeholder="Giá sau giảm"
+                                    ng-model="price.finalAmount" readonly>
+                                <!-- Hiển thị định dạng giá tiền -->
+                                <span class="input-group-text">{{ price.finalAmount | currencyFormat }}</span>
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div class="col-md-4">
+                            <label for="description" class="form-label">Mô tả</label>
+                            <input type="text" id="description" class="form-control" placeholder="Nhập mô tả"
+                                ng-model="price.description">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select id="status" class="form-control" ng-model="price.status" required>
+                            <option value="ACTIVATE">ACTIVATE</option>
+                            <option value="DEACTIVATE">DEACTIVATE</option>
+                        </select>
+                    </div>
+                    
+
+                    <!-- Action Buttons -->
+                    <div class="text-end">
+                        <button type="button" class="btn btn-success me-2" ng-click="createPrice()">Thêm mới</button>
+                        <button type="button" class="btn btn-primary me-2" ng-click="updatePrice()">Cập nhật</button>
+                        <button type="button" class="btn btn-danger" ng-click="resetForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bảng hiển thị danh sách giá -->
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+                <h5>Danh sách giá</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Thời hạn</th>
+                            <th>Giá tiền gốc</th>
+                            <th>Phần trăm giảm giá</th>
+                            <th>Giá sau giảm</th>
+                            <th>Loại tiền tệ</th>
+                            <th>Mô tả</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="price in prices">
+                            <td>{{ price.priceId }}</td>
+                            <td>{{ price.duration }} ngày</td>
+                            <td>{{ formatCurrency(price.amount)}}</td>
+                            <td>{{ price.discountPercentage }}%</td>
+                            <td>{{ formatCurrency(price.finalAmount)}}</td>
+                            <td>{{ price.currency }}</td>
+                            <td>{{ price.description }}</td>
+                            <td>{{ price.status }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" ng-click="editPrice(price)">Sửa</button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal xác nhận xóa -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa giá này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" ng-click="confirmDelete()">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+
+</html>
