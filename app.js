@@ -27,7 +27,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider,  $l
             controller: 'adminAppController'
         })
         .when('/login', {
-            templateUrl: 'app/components/login/Login.html',
+            templateUrl: 'app/components/login/login.html',
             controller: 'LoginController'
         })
         .when('/post', {
